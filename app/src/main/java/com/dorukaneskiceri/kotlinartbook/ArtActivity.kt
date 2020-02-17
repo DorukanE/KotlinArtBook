@@ -1,16 +1,23 @@
 package com.dorukaneskiceri.kotlinartbook
 
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import kotlinx.android.synthetic.main.activity_art.*
 import java.util.jar.Manifest
 
 class ArtActivity : AppCompatActivity() {
+
+    var selectedImage: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,5 +53,21 @@ class ArtActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-    
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(requestCode == 2 && resultCode == Activity.RESULT_OK && data != null){
+            selectedImage = data.data
+
+            if(selectedImage != null){
+                if(Build.VERSION.SDK_INT >= 28){
+                    val source = ImageDecoder.createSource(this.contentResolver,selectedImage!!)
+                    val bitmap = ImageDecoder.decodeBitmap(source)
+                    imageView.setImageBitmap(bitmap)
+                }else{
+                    val bitmap = MediaStore.Images.Media.getBitmap(contentResolver,selectedImage)
+                    imageView.setImageBitmap(bitmap)
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
 }
