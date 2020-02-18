@@ -100,8 +100,10 @@ class ArtActivity : AppCompatActivity() {
                 }catch(e: Exception){
                     e.printStackTrace()
                 }
-                finish()
-
+                //finish()
+                val intent = Intent(this,MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
             }else{
                 Toast.makeText(this,"Please make sure to be choose an image.",Toast.LENGTH_LONG).show()
             }
