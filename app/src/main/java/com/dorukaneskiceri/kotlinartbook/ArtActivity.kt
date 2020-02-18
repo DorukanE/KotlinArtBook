@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
@@ -27,6 +28,45 @@ class ArtActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_art)
+
+        val intent = intent
+        val info = intent.getStringExtra("info")
+
+        //Intent Separate
+        if(info.equals("new")){
+            artText.setText("")
+            artistText.setText("")
+            yearText.setText("")
+            button.visibility = View.VISIBLE
+
+            val selectedImageBackground = BitmapFactory.decodeResource(applicationContext.resources,R.drawable.selectimage)
+            imageView.setImageBitmap(selectedImageBackground)
+        }else{
+            button.visibility = View.INVISIBLE
+            imageView.isClickable = false
+            artText.isFocusable = false
+            artistText.isFocusable = false
+            yearText.isFocusable = false
+            val selectedId = intent.getIntExtra("id",1)
+
+            val database = this.openOrCreateDatabase("Art", Context.MODE_PRIVATE,null)
+            val cursor = database.rawQuery("SELECT * FROM arts WHERE id = ?", arrayOf(selectedId.toString()))
+            val artNameIndex = cursor.getColumnIndex("artName")
+            val artistNameIndex = cursor.getColumnIndex("artistName")
+            val yearIndex = cursor.getColumnIndex("year")
+            val imageIndex = cursor.getColumnIndex("image")
+
+            while (cursor.moveToNext()){
+                artText.setText(cursor.getString(artNameIndex))
+                artistText.setText(cursor.getString(artistNameIndex))
+                yearText.setText(cursor.getString(yearIndex))
+
+                val byteArray = cursor.getBlob(imageIndex)
+                val bitmap = BitmapFactory.decodeByteArray(byteArray,0,byteArray.size)
+                imageView.setImageBitmap(bitmap)
+            }
+            cursor.close()
+        }
     }
 
     //Saving SQLite
