@@ -1,6 +1,7 @@
 package com.dorukaneskiceri.kotlinartbook
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -33,18 +34,34 @@ class ArtActivity : AppCompatActivity() {
 
         val artName = artText.text.toString()
         val artistName = artistText.text.toString()
-        val year = yearText.text.toString().toIntOrNull()
+        val year = yearText.text.toString()
 
-        if(year == null || artName == null || artistName == null){
+        if(year == "" || artName == "" || artistName == ""){
             Toast.makeText(this,"Please write inputs correctly.",Toast.LENGTH_LONG).show()
-        }
-        else{
+        } else{
             if(selectedBitmap != null){
 
                 val smallBitmap = makeSmallerBitmap(selectedBitmap!!,300)
                 val outputStream = ByteArrayOutputStream()
                 smallBitmap.compress(Bitmap.CompressFormat.PNG,50,outputStream)
                 val byteArray = outputStream.toByteArray()
+
+                try{
+                    val database = openOrCreateDatabase("Art", Context.MODE_PRIVATE,null)
+                    database.execSQL("CREATE TABLE IF NOT EXISTS arts(id INTEGER PRIMARY KEY, artName VARCHAR, artistName VARCHAR, year VARCHAR, image BLOB)")
+                    val sqlString = "INSERT INTO arts(artName, artistName, year, image) VALUES(?, ?, ?, ?)"
+                    val statement = database.compileStatement(sqlString)
+                    statement.bindString(1,artName)
+                    statement.bindString(2,artistName)
+                    statement.bindString(3,year)
+                    statement.bindBlob(4,byteArray)
+
+                    statement.execute()
+                }catch(e: Exception){
+                    e.printStackTrace()
+                }
+                finish()
+
             }else{
                 Toast.makeText(this,"Please make sure to be choose an image.",Toast.LENGTH_LONG).show()
             }
