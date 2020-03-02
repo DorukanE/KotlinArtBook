@@ -57,7 +57,7 @@
         android:ems="10"
         android:gravity="center"
         android:hint="Year"
-        android:inputType="textPersonName"
+        android:inputType="number"
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

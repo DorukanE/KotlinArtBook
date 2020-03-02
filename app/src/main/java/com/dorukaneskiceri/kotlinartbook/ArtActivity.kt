@@ -76,7 +76,7 @@ class ArtActivity : AppCompatActivity() {
         val artistName = artistText.text.toString()
         val year = yearText.text.toString()
 
-        if(year == "" || artName == "" || artistName == ""){
+        if(year.isBlank() || artName.isBlank() || artistName.isBlank()){
             Toast.makeText(this,"Please write inputs correctly.",Toast.LENGTH_LONG).show()
         } else{
             if(selectedBitmap != null){
