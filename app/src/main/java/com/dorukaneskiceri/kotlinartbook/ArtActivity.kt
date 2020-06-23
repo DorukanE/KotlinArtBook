@@ -22,8 +22,8 @@ import java.util.jar.Manifest
 
 class ArtActivity : AppCompatActivity() {
 
-    var selectedImage: Uri? = null
-    var selectedBitmap: Bitmap? = null
+    private var selectedImage: Uri? = null
+    private var selectedBitmap: Bitmap? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
