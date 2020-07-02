@@ -6,3 +6,8 @@
 #### *This project made with Kotlin programming language in Android Studio*
 ##### Screenshots of the project:
 
+![ScreenShot1](https://github.com/DorukanE/KotlinArtBook/blob/master/images/screenshot1.png)
+![ScreenShot2](https://github.com/DorukanE/KotlinArtBook/blob/master/images/screenshot2.png)
+![ScreenShot3](https://github.com/DorukanE/KotlinArtBook/blob/master/images/screenshot3.png)
+![ScreenShot4](https://github.com/DorukanE/KotlinArtBook/blob/master/images/screenshot5.png)
+![ScreenShot5](https://github.com/DorukanE/KotlinArtBook/blob/master/images/screenshot4.png)
